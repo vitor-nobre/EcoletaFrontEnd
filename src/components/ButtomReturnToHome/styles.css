@@ -1,0 +1,16 @@
+#page-buttom a {
+    display: flex;
+    text-decoration: none;
+}
+
+#page-buttom a p{
+    color: #ffffff;
+    font-weight: bold;
+    margin: auto;
+}
+
+#page-buttom a svg {
+    margin: auto;
+    color: #00FF00;
+    margin-right: 10px;
+}
