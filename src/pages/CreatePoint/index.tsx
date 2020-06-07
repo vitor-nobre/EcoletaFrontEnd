@@ -5,6 +5,7 @@ import { LeafletMouseEvent } from 'leaflet'
 import ButtomReturnToHome from '../../components/ButtomReturnToHome'
 import Alert from '../../components/Alert'
 import axios from 'axios'
+import Dropzone from '../../components/Dropzone'
 
 import api from '../../services/api'
 
@@ -27,10 +28,11 @@ interface IBGECityResponse {
 }
 
 const CreatePoint = () => {
-    const su = true
-    const [ items, setItems ] = useState<Item[]>([])
-    const [ ufs, setUfs ] = useState<string[]>([])
-    const [cities, setCities ] = useState<string[]>([])
+    const [selectedFile, setSelectedFile] = useState<File>()
+    const [result, setResult] = useState(false)
+    const [items,setItems] = useState<Item[]>([])
+    const [ufs,setUfs] = useState<string[]>([])
+    const [cities,setCities] = useState<string[]>([])
 
     const [initialPosition, setInitialPosition] = useState<[number, number]>([0,0])
 
@@ -133,35 +135,38 @@ const CreatePoint = () => {
         const city = selectedCity
         const [latitude, longitude] = selectedPosition
         const items = selectedItems
+        
+        const data = new FormData()
 
-        const data = {
-            name,
-            email,
-            whatsapp,
-            uf,
-            city,
-            latitude,
-            longitude,
-            items
-        }
+        
+        data.append('name',name)
+        data.append('email',email)
+        data.append('whatsapp',whatsapp)
+        data.append('uf',uf)
+        data.append('city',city)
+        data.append('latitude',String(latitude))
+        data.append('longitude',String(longitude))
+        data.append('items',items.join(','))
+        if(selectedFile){
+            data.append('image', selectedFile)  
+        }      
 
         await api.post('points',data)
-        alert('Ponto de coleta criado')
-        return <div> OLÀ</div>
-        //history.push('/alert')
+        setResult(true)
+        setTimeout(() => {history.push('/')},500)
     }
 
-    return (
-        <div id="page-div">
-            
-            <div id="page-create-point">
+    return (    
+        <div id="page-create-point-inter">      
+         
+        <div id="page-create-point">
                 <header>
                     <img src={logo} alt="Ecoleta"/>
                     <ButtomReturnToHome/>
                 </header>
                 <form onSubmit={handleSubmit}>
                     <h1>Cadastro do <br/> ponto de coleta</h1>
-
+                    <Dropzone onFileUploaded={setSelectedFile}/>
                     <fieldset>
                         <legend>
                             <h2>Dados</h2>
@@ -273,8 +278,8 @@ const CreatePoint = () => {
                     </button>
                 </form>
             </div>
-            {(su) ? <Alert/> : ''}
-        </div>
+            {(result) ? <Alert/> : ''}  
+          </div>  
     )
 }
 

@@ -1,22 +1,21 @@
-#page-div{
-  position: relative;
+#page-create-point-inter {
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
 }
-#page-create-point{
-    opacity: 1;
-    position: absolute;
+
+#page-create-point {
     width: 100%;
-    max-width: 1100px;
-    position: absolute;
+    max-width: 1000px;
     margin: 0 auto;
   }
-#page-create-point::after{
-  
+
+  #page-alert {
+    margin-top: 95%;
     position: absolute;
-    background-color:rgba(0,0,0,.6);
-  }
-  #page-alert{
     width: 100%;
   }
+
   #page-create-point header {
     margin-top: 48px;
   
